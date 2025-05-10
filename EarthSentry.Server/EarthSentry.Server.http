@@ -1,0 +1,6 @@
+@EarthSentry.Server_HostAddress = http://localhost:5253
+
+GET {{EarthSentry.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
