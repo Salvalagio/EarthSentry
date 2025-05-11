@@ -1,0 +1,1 @@
+docker pull salvalagio/earth_sentry_db

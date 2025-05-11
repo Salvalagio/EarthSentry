@@ -2,8 +2,9 @@ using EarthSentry.CrossCutting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+IConfiguration configuration = builder.Configuration;
 // Add services to the container.
-DependencyInjection.RegisterServices(builder.Services);
+DependencyInjection.RegisterServices(builder.Services, configuration);
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
