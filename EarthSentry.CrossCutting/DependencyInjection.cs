@@ -1,8 +1,10 @@
 ﻿using EarthSentry.Contracts.Interfaces.Business;
+using EarthSentry.Contracts.Interfaces.Services;
 using EarthSentry.Data.Base;
 using EarthSentry.Data.Repositories;
 using EarthSentry.Domain.Business;
 using EarthSentry.Domain.Repositories;
+using EarthSentry.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +17,8 @@ namespace EarthSentry.CrossCutting
         {
             DatabaseRegister(services, configuration);
            
-            services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddSingleton<ICloudinaryService, CloudinaryService>();
+            services.AddSingleton<IUserBusiness, UserBusiness>();
 
         }
 
@@ -24,9 +27,9 @@ namespace EarthSentry.CrossCutting
             services.AddDbContext<EarthSentryDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("EarthDB")));
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IRoleRepository, RoleRepository>();
+            services.AddSingleton<IUserRoleRepository, UserRoleRepository>();
         }
     }
 }
