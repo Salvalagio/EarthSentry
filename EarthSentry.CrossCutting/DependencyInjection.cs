@@ -19,7 +19,6 @@ namespace EarthSentry.CrossCutting
            
             services.AddSingleton<ICloudinaryService, CloudinaryService>();
             services.AddScoped<IUserBusiness, UserBusiness>();
-
         }
 
         private static void DatabaseRegister(IServiceCollection services, IConfiguration configuration)

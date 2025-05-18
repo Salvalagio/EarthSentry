@@ -38,15 +38,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Database", "3.Database", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{66EF0330-4E44-4B81-B6B5-B46828C47988}"
 	ProjectSection(SolutionItems) = preProject
-		1-Schema.sql = 1-Schema.sql
-		2-CreateUserStructure.sql = 2-CreateUserStructure.sql
-		3-RoleInput.sql = 3-RoleInput.sql
+		Documentation\Database\1-Schema.sql = Documentation\Database\1-Schema.sql
+		Documentation\Database\2-CreateUserStructure.sql = Documentation\Database\2-CreateUserStructure.sql
+		Documentation\Database\3-RoleInput.sql = Documentation\Database\3-RoleInput.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Infrastructure", "4.Infrastructure", "{ADF43E63-AF1E-4AEE-BAFF-F9B4D5F714B0}"
 	ProjectSection(SolutionItems) = preProject
-		0-DockerPullImage.md = 0-DockerPullImage.md
-		1-DatabaseRunCommand.md = 1-DatabaseRunCommand.md
+		Documentation\Infrastructure\0-DockerPullImage.md = Documentation\Infrastructure\0-DockerPullImage.md
+		Documentation\Infrastructure\1-DatabaseRunCommand.md = Documentation\Infrastructure\1-DatabaseRunCommand.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthSentry.Services", "EarthSentry.Services\EarthSentry.Services.csproj", "{153CC99E-92AC-4F7B-9CDD-57073C4AA0D6}"
