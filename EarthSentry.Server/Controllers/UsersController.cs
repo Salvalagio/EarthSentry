@@ -1,5 +1,5 @@
+using EarthSentry.Contracts.Contracts.Users.Dtos;
 using EarthSentry.Contracts.Interfaces.Business;
-using EarthSentry.Contracts.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EarthSentry.Server.Controllers

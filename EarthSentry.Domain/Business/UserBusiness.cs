@@ -1,5 +1,5 @@
-﻿using EarthSentry.Contracts.Interfaces.Business;
-using EarthSentry.Contracts.Users.Dtos;
+﻿using EarthSentry.Contracts.Contracts.Users.Dtos;
+using EarthSentry.Contracts.Interfaces.Business;
 using EarthSentry.Domain.Entities.Users;
 using EarthSentry.Domain.Repositories;
 using Microsoft.Extensions.Logging;

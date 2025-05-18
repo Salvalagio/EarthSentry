@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{66EF
 		Documentation\Database\1-Schema.sql = Documentation\Database\1-Schema.sql
 		Documentation\Database\2-CreateUserStructure.sql = Documentation\Database\2-CreateUserStructure.sql
 		Documentation\Database\3-RoleInput.sql = Documentation\Database\3-RoleInput.sql
+		4-CreatePostStructure.sql = 4-CreatePostStructure.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Infrastructure", "4.Infrastructure", "{ADF43E63-AF1E-4AEE-BAFF-F9B4D5F714B0}"

@@ -16,9 +16,16 @@ namespace EarthSentry.CrossCutting
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             DatabaseRegister(services, configuration);
-           
-            services.AddSingleton<ICloudinaryService, CloudinaryService>();
+
+            #region Business
             services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddScoped<IPostBusiness, PostBusiness>();
+            #endregion
+
+            #region Services
+            services.AddSingleton<ICloudinaryService, CloudinaryService>();
+            #endregion
+
         }
 
         private static void DatabaseRegister(IServiceCollection services, IConfiguration configuration)
@@ -29,6 +36,8 @@ namespace EarthSentry.CrossCutting
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostVoteRepository, PostVoteRepository>();
         }
     }
 }

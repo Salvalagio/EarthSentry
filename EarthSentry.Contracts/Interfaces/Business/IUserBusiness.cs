@@ -1,4 +1,4 @@
-﻿using EarthSentry.Contracts.Users.Dtos;
+﻿using EarthSentry.Contracts.Contracts.Users.Dtos;
 
 namespace EarthSentry.Contracts.Interfaces.Business
 {

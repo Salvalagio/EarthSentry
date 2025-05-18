@@ -1,4 +1,6 @@
-﻿namespace EarthSentry.Domain.Entities.Users
+﻿using EarthSentry.Domain.Entities.Posts;
+
+namespace EarthSentry.Domain.Entities.Users
 {
     public class User
     {
@@ -11,5 +13,8 @@
         public bool IsActive { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
+
+        public ICollection<Post> Posts { get; set; }
+        public ICollection<PostVote> PostVotes { get; set; }
     }
 }

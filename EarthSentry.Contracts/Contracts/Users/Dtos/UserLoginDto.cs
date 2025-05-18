@@ -1,4 +1,4 @@
-﻿namespace EarthSentry.Contracts.Users.Dtos
+﻿namespace EarthSentry.Contracts.Contracts.Users.Dtos
 {
     public class UserLoginDto
     {
