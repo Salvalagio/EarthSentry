@@ -17,7 +17,6 @@ namespace EarthSentry.Domain.Business
             {
                 UserId = u.UserId,
                 Username = u.Username,
-                Email = u.Email,
                 Roles = [.. u.UserRoles.Select(ur => ur.Role.RoleName)]
             });
         }
@@ -35,6 +34,7 @@ namespace EarthSentry.Domain.Business
             {
                 UserId = user.UserId,
                 Username = user.Username,
+                ImageUrl = user.ImageUrl,
                 Email = user.Email,
             };
         }
@@ -79,6 +79,7 @@ namespace EarthSentry.Domain.Business
                     Username = userRegisterDto.Username,
                     Email = userRegisterDto.Email,
                     PasswordHash = HashPassword(userRegisterDto.Password),
+                    ImageUrl = userRegisterDto.ImageUrl,
                     CreatedAt = DateTime.UtcNow,
                     IsActive = true
                 };
@@ -110,6 +111,7 @@ namespace EarthSentry.Domain.Business
             if (user == null) return false;
 
             user.Email = dto.Email ?? user.Email;
+            user.Email = dto.ImageUrl ?? user.ImageUrl;
             if (!string.IsNullOrWhiteSpace(dto.NewPassword))
                 user.PasswordHash = HashPassword(dto.NewPassword);
 

@@ -48,6 +48,8 @@ namespace EarthSentry.Data.Base
                 entity.Property(u => u.IsActive)
                       .HasColumnName("isactive")
                       .HasDefaultValue(true);
+                entity.Property(u => u.ImageUrl)
+                      .HasColumnName("imageurl");
             });
 
             modelBuilder.Entity<Role>(entity => {

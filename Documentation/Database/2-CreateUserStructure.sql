@@ -3,6 +3,7 @@ create table earth.tb_users (
     username varchar(50) not null unique,
     email varchar(100) not null unique,
     passwordhash varchar(255) not null,
+    imageurl TEXT NULL,
     createdat timestamp default current_timestamp,
     lastlogin timestamp,
     isactive boolean default true

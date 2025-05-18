@@ -90,7 +90,9 @@ namespace EarthSentry.Domain.Business
                 Longitude = p.Longitude,
                 CreatedAt = p.CreatedAt,
                 VoteCount = p.Votes.Sum(v => v.Vote),
-                UserVote = p.Votes.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0
+                UserVote = p.Votes.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
+                Username = p.User.Username,
+                UserImageUrl = p.User.ImageUrl
             });
         }
 

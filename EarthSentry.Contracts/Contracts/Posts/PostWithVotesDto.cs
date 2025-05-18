@@ -14,5 +14,7 @@
         /// User vote for the post. -1 for downvote, 1 for upvote, 0 for no vote.
         /// </summary>
         public int UserVote { get; set; }
+        public string Username { get; set; }
+        public object UserImageUrl { get; set; }
     }
 }
