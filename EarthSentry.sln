@@ -3,23 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "earthsentry.client", "earthsentry.client\earthsentry.client.esproj", "{A00C30F9-89DC-2544-E800-36A4A8D35869}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthSentry.Server", "EarthSentry.Server\EarthSentry.Server.csproj", "{44A59DA4-ACD6-4C6A-939C-F361C99098F2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{57059EC6-E90B-4CBB-9EAB-A4783C13E8F6} = {57059EC6-E90B-4CBB-9EAB-A4783C13E8F6}
 		{DF6968DA-3534-463D-ADC2-D1A676D1FD35} = {DF6968DA-3534-463D-ADC2-D1A676D1FD35}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Frontend", "1.Frontend", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Presentation", "1.Presentation", "{2300FC25-0D6C-49DA-8273-C4B93262ADBF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Backend", "2.Backend", "{4247073E-9332-4087-BD66-BC848D68E96E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Business", "2.Business", "{24FF8498-DACA-4774-94B6-15EA16D0DC3F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.1.Presentation", "2.1.Presentation", "{2300FC25-0D6C-49DA-8273-C4B93262ADBF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.2.Business", "2.2.Business", "{24FF8498-DACA-4774-94B6-15EA16D0DC3F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.3.Infrastructure", "2.3.Infrastructure", "{2C3F0802-E0A5-44F6-AD6C-83885B2D821A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Infrastructure", "3.Infrastructure", "{2C3F0802-E0A5-44F6-AD6C-83885B2D821A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthSentry.Domain", "EarthSentry.Domain\EarthSentry.Domain.csproj", "{D9734B36-A05D-4106-8637-9D2699EF1CF7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -34,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthSentry.CrossCutting", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthSentry.Contracts", "EarthSentry.Contracts\EarthSentry.Contracts.csproj", "{57059EC6-E90B-4CBB-9EAB-A4783C13E8F6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Database", "3.Database", "{5125E92C-518C-4FFD-8F38-7BE13A1770E9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Database", "4.Database", "{5125E92C-518C-4FFD-8F38-7BE13A1770E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{66EF0330-4E44-4B81-B6B5-B46828C47988}"
 	ProjectSection(SolutionItems) = preProject
@@ -44,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{66EF
 		Documentation\Database\4-CreatePostStructure.sql = Documentation\Database\4-CreatePostStructure.sql
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Infrastructure", "4.Infrastructure", "{ADF43E63-AF1E-4AEE-BAFF-F9B4D5F714B0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Infrastructure", "5.Infrastructure", "{ADF43E63-AF1E-4AEE-BAFF-F9B4D5F714B0}"
 	ProjectSection(SolutionItems) = preProject
 		Documentation\Infrastructure\0-DockerPullImage.md = Documentation\Infrastructure\0-DockerPullImage.md
 		Documentation\Infrastructure\1-DatabaseRunCommand.md = Documentation\Infrastructure\1-DatabaseRunCommand.md
@@ -58,12 +52,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A00C30F9-89DC-2544-E800-36A4A8D35869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A00C30F9-89DC-2544-E800-36A4A8D35869}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A00C30F9-89DC-2544-E800-36A4A8D35869}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{A00C30F9-89DC-2544-E800-36A4A8D35869}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A00C30F9-89DC-2544-E800-36A4A8D35869}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A00C30F9-89DC-2544-E800-36A4A8D35869}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{44A59DA4-ACD6-4C6A-939C-F361C99098F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44A59DA4-ACD6-4C6A-939C-F361C99098F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44A59DA4-ACD6-4C6A-939C-F361C99098F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,11 +81,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A00C30F9-89DC-2544-E800-36A4A8D35869} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{44A59DA4-ACD6-4C6A-939C-F361C99098F2} = {2300FC25-0D6C-49DA-8273-C4B93262ADBF}
-		{2300FC25-0D6C-49DA-8273-C4B93262ADBF} = {4247073E-9332-4087-BD66-BC848D68E96E}
-		{24FF8498-DACA-4774-94B6-15EA16D0DC3F} = {4247073E-9332-4087-BD66-BC848D68E96E}
-		{2C3F0802-E0A5-44F6-AD6C-83885B2D821A} = {4247073E-9332-4087-BD66-BC848D68E96E}
 		{D9734B36-A05D-4106-8637-9D2699EF1CF7} = {24FF8498-DACA-4774-94B6-15EA16D0DC3F}
 		{100F3F8A-1FA3-401C-A4E3-BF6F82ED12B9} = {2C3F0802-E0A5-44F6-AD6C-83885B2D821A}
 		{DF6968DA-3534-463D-ADC2-D1A676D1FD35} = {2C3F0802-E0A5-44F6-AD6C-83885B2D821A}
