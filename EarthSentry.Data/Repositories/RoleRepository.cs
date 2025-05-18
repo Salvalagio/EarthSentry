@@ -9,7 +9,7 @@ namespace EarthSentry.Data.Repositories
     {
         public async Task<Role?> GetByNameAsync(string roleName)
         {
-            return await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == roleName);
+            return await _context.Roles.FirstOrDefaultAsync(r => r.RoleName.ToLower() == roleName.ToLower());
         }
     }
 

@@ -36,6 +36,7 @@ namespace EarthSentry.Domain.Business
                 Username = user.Username,
                 ImageUrl = user.ImageUrl,
                 Email = user.Email,
+                Roles = [.. user.UserRoles.Select(ur => ur.Role.RoleName)]
             };
         }
 

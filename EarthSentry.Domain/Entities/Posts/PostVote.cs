@@ -13,8 +13,8 @@ namespace EarthSentry.Domain.Entities.Posts
         public short Vote { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public Post Post { get; set; }
-        public User User { get; set; }
+        public Post Post { get; set; } = new();
+        public User User { get; set; } = new();
     }
 
 }

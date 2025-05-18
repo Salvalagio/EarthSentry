@@ -15,8 +15,8 @@ namespace EarthSentry.Domain.Entities.Posts
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public User User { get; set; }
-        public ICollection<PostVote> Votes { get; set; }
+        public User User { get; set; } = new();
+        public ICollection<PostVote> Votes { get; set; } = [];
     }
 
 }
