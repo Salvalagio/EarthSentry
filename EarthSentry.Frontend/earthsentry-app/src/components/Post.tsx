@@ -35,14 +35,14 @@ const Post: React.FC<PostDto> = ({
           alt="Post visual"
           sx={{ borderRadius: 2, mb: 2, maxHeight: 300, objectFit: "cover" }}
         />
-        <Stack direction="row" spacing={4} justifyContent="center">
-          <Box display="flex" alignItems="center" gap={1}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: "100%", flexWrap: "wrap", mt: 2 }}>
+          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-start", gap: 1 }}>
             <ArrowUpward /> {upvotes}
           </Box>
-          <Box display="flex" alignItems="center" gap={1}>
-            <ArrowDownward /> {downvotes}
+          <Box sx={{ flex: 1, display: "flex", justifyContent: "center", gap: 1 }}>
+            <ArrowDownward/> {downvotes}
           </Box>
-          <Box display="flex" alignItems="center" gap={1}>
+          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end", gap: 1 }}>
             <ChatBubbleOutline /> {comments}
           </Box>
         </Stack>
