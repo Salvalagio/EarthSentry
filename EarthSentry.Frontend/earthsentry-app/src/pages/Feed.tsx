@@ -133,9 +133,11 @@ const FeedPage: React.FC<DarkLightModeSwitchProps> = ({ darkMode, onToggle }) =>
     <Box>
       <EarthSentryAppBar darkMode={darkMode} onToggle={onToggle} />
       <Box display="flex" flexDirection="column" gap={4} maxWidth={600} mx="auto" mt={4}>
-        {posts.map((post) => (
-          <Post key={post.id} {...post} />
-        ))}
+        {posts.map((post) => {
+          return (
+            <Post key={post.id} {...post} />
+          );
+        })}
       </Box>
       <FloatingButton />
     </Box>

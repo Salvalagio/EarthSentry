@@ -3,6 +3,8 @@ import { ThemeProvider, createTheme, CssBaseline, Container } from "@mui/materia
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import FeedPage from "./pages/Feed";
 import LoginPage from "./pages/LoginPage";
+import PostDetailPage from "./pages/PostDetailPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -39,8 +41,16 @@ const App = () => {
       <Router>
         <Container sx={{ mt: 4 }}>
           <Routes>
-            <Route path="/" element={<LoginPage />}></Route>
+            <Route path="*" element={<LoginPage />}></Route>
             <Route path="/feed" element={<FeedPage  darkMode={darkMode} onToggle={() => setDarkMode(!darkMode)} />} />
+            <Route path="/postDetail" element={<PostDetailPage />}></Route>
+            <Route path="/profilePage" element={<ProfilePage onBack={function (): void {
+              throw new Error("Function not implemented.");
+            } } onEditPhoto={function (): void {
+              throw new Error("Function not implemented.");
+            } } onLogout={function (): void {
+              throw new Error("Function not implemented.");
+            } } email={"teste@teste.com"} profileImage={"12345"} />} />
           </Routes>
         </Container>
       </Router>
