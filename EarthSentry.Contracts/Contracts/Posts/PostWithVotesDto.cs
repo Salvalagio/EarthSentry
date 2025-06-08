@@ -15,6 +15,8 @@
         /// </summary>
         public int UserVote { get; set; }
         public string Username { get; set; }
-        public object UserImageUrl { get; set; }
+        public string UserImageUrl { get; set; }
+        public int UpVotes { get; set; }
+        public int DownVotes { get; set; }
     }
 }

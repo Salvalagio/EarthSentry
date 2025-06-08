@@ -38,11 +38,11 @@ namespace EarthSentry.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser([FromBody] UserLoginDto loginDto)
         {
-            var result = await _userBusiness.LoginUserAsync(loginDto);
-            if (!result)
+            var (Success, UserId, UserImage) = await _userBusiness.LoginUserAsync(loginDto);
+            if (!Success)
                 return Unauthorized();
 
-            return Ok(new { message = "Login successful" });
+            return Ok(new { userId = UserId, userImage = UserImage });
         }
 
         [HttpPost("register")]

@@ -55,17 +55,17 @@ namespace EarthSentry.Domain.Business
             return true;
         }
 
-        public async Task<bool> LoginUserAsync(UserLoginDto userLoginDto)
+        public async Task<(bool, int?, string)> LoginUserAsync(UserLoginDto userLoginDto)
         {
             var user = await _userRepo.GetByUsernameAsync(userLoginDto.Username);
             if (user == null || !VerifyPassword(userLoginDto.Password, user.PasswordHash))
-                return false;
+                return (false, null, string.Empty);
 
             user.LastLogin = DateTime.UtcNow;
             _userRepo.Update(user);
             await _userRepo.SaveAsync();
 
-            return true;
+            return (true, user.UserId, user.ImageUrl);
         }
 
         public async Task<(bool Success, string Message)> RegisterUserAsync(UserRegisterDto userRegisterDto)

@@ -8,15 +8,24 @@ namespace EarthSentry.Domain.Business
 {
     public class PostBusiness(ILogger<PostBusiness> _logger,
                               IPostRepository _postRepo,
-                              IPostVoteRepository _voteRepo) : IPostBusiness
+                              IPostVoteRepository _voteRepo,
+                              IUserRepository _userRepository) : IPostBusiness
     {
         public async Task<bool> AddPostAsync(PostCreateDto dto, int userId)
         {
             try
             {
+                var user = _userRepository.GetByIdAsync(userId).Result;
+                if (user == null)
+                {
+                    _logger.LogWarning("User with ID {UserId} not found.", userId);
+                    return false;
+                }
+
                 var post = new Post
                 {
                     UserId = userId,
+                    User = user, // Assuming _userRepository is injected and available
                     Description = dto.Description,
                     ImageUrl = dto.ImageUrl,
                     Latitude = dto.Latitude,
@@ -89,7 +98,8 @@ namespace EarthSentry.Domain.Business
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
                 CreatedAt = p.CreatedAt,
-                VoteCount = p.Votes.Sum(v => v.Vote),
+                UpVotes = p.Votes.Where(x => x.Vote > 0).Sum(v => v.Vote),
+                DownVotes = p.Votes.Where(x => x.Vote < 0).Sum(v => v.Vote),
                 UserVote = p.Votes.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
                 Username = p.User.Username,
                 UserImageUrl = p.User.ImageUrl

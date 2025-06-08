@@ -16,10 +16,10 @@ namespace EarthSentry.Server.Controllers
         }
 
         [HttpGet("feed/{userId}")]
-        public async Task<ActionResult<IEnumerable<PostWithVotesDto>>> GetAllPostsWithUserVotes([FromRoute] int userId, [FromQuery] int page)
+        public async Task<ActionResult> GetAllPostsWithUserVotes([FromRoute] int userId, [FromQuery] int page)
         {
             var posts = await _postBusiness.GetAllPostsWithUserVoteAsync(userId, page);
-            return Ok(posts);
+            return Ok(new { posts, HasMore = posts?.Any() ?? false });
         }
 
         [HttpPost("create/{userId}")]
@@ -29,7 +29,7 @@ namespace EarthSentry.Server.Controllers
             if (!result)
                 return BadRequest(new { message = "Could not create post." });
 
-            return Ok(new { message = "Post created successfully." });
+            return Ok();
         }
 
         [HttpPut("edit/{postId}")]
