@@ -4,7 +4,6 @@ using EarthSentry.Data.Base;
 using EarthSentry.Data.Repositories;
 using EarthSentry.Domain.Business;
 using EarthSentry.Domain.Repositories;
-using EarthSentry.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,11 +20,6 @@ namespace EarthSentry.CrossCutting
             services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IPostBusiness, PostBusiness>();
             #endregion
-
-            #region Services
-            services.AddSingleton<ICloudinaryService, CloudinaryService>();
-            #endregion
-
         }
 
         private static void DatabaseRegister(IServiceCollection services, IConfiguration configuration)

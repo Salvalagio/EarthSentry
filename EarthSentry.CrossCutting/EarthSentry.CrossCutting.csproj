@@ -14,7 +14,6 @@
 	  <ProjectReference Include="..\EarthSentry.Contracts\EarthSentry.Contracts.csproj" />
 	  <ProjectReference Include="..\EarthSentry.Data\EarthSentry.Data.csproj" />
 	  <ProjectReference Include="..\EarthSentry.Domain\EarthSentry.Domain.csproj" />
-	  <ProjectReference Include="..\EarthSentry.Services\EarthSentry.Services.csproj" />
   </ItemGroup>
 
 </Project>
