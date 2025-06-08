@@ -2,34 +2,33 @@ import React from "react";
 import { Avatar, Box, Typography, Card, CardContent, CardMedia, Stack } from "@mui/material";
 import { PostDto } from "../interfaces/PostDto";
 import PostActions from "./PostActions";
-import { Link } from "react-router-dom";
 
 
 const Post: React.FC<PostDto> = ({
-  username,
-  timestamp,
-  content,
+  postId,
+  description,
   imageUrl,
-  avatarUrl,
+  userImageUrl,
+  username,
   upvotes,
   downvotes,
   comments,
+  disabledActions = false,
 }) => {
   return (
     <Card>
       <CardContent>
-        <Link to="/postDetail" style={{ textDecoration: "none", color: "inherit" }}>
           <Box display="flex" alignItems="center" mb={2}>
-            <Avatar src={avatarUrl} alt="avatar" />
+            <Avatar src={userImageUrl} alt="avatar" />
             <Box ml={2}>
               <Typography fontWeight="bold">{username}</Typography>
               <Typography variant="caption" color="text.secondary">
-                {timestamp}
+                {"1d"} {/* TBD timestamp that post was created */}
               </Typography>
             </Box>
           </Box>
           <Typography variant="body1" mb={2}>
-            {content}
+            {description}
           </Typography>
           <CardMedia
             component="img"
@@ -37,8 +36,7 @@ const Post: React.FC<PostDto> = ({
             alt="Post visual"
             sx={{ borderRadius: 2, mb: 2, maxHeight: 300, objectFit: "cover" }}
           />
-        </Link>
-        <PostActions upvotes={upvotes} downvotes={downvotes} comments={comments} />
+        <PostActions upvotes={upvotes} downvotes={downvotes} comments={comments} disabledActions={disabledActions} postId={postId} />
       </CardContent>
     </Card>
   );

@@ -1,10 +1,11 @@
 export interface PostDto {
-  username: string;
-  timestamp: string;
-  content: string;
+  postId: number;
+  description: string;
   imageUrl: string;
-  avatarUrl: string;
+  userImageUrl: string;
+  username: string;
   upvotes: number;
   downvotes: number;
   comments: number;
+  disabledActions?: boolean; // Optional property to disable actions
 }

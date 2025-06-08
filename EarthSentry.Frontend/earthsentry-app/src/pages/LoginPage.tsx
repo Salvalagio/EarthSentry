@@ -1,13 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   TextField,
   Typography,
 } from "@mui/material";
+import { postUserLogin } from "../services/LoginService";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { setUserId, setUserImage } = useAuth();
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await postUserLogin({
+        username,
+        password,
+        userImage: null,
+        userId: null,
+        message: null
+      });
+
+      setUserId(response.userId);
+      setUserImage(response.userImage);
+      navigate("/feed");
+    } catch (err: any) {
+      setError("Login failed. Check your credentials.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -37,10 +71,12 @@ const LoginPage: React.FC = () => {
         </Typography>
 
         <TextField
-          label="Email"
+          label="Username"
           variant="outlined"
           fullWidth
           InputProps={{ sx: { borderRadius: 2 } }}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
         <TextField
@@ -49,11 +85,17 @@ const LoginPage: React.FC = () => {
           type="password"
           fullWidth
           InputProps={{ sx: { borderRadius: 2 } }}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
+
+        {error && <Typography color="error">{error}</Typography>}
 
         <Button
           variant="contained"
           fullWidth
+          onClick={handleLogin}
+          disabled={loading}
           sx={{
             backgroundColor: "#007bff",
             color: "#fff",
@@ -66,7 +108,7 @@ const LoginPage: React.FC = () => {
             },
           }}
         >
-          Log In
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
         </Button>
       </Container>
     </Box>

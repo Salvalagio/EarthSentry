@@ -1,7 +1,7 @@
 import { Button, Box } from "@mui/material";
 import { SunIcon, MoonIcon } from "lucide-react";
 import React from "react";
-import { DarkLightModeSwitchProps } from "../types/DarkLightModeSwitchProps";
+import { DarkLightModeSwitchProps } from "../types/EarthSentryAppBarProps";
 
 
 

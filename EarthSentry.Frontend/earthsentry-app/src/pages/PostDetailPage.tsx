@@ -14,6 +14,7 @@ import PostActions from '../components/PostActions';
 
 const PostDetailPage: React.FC = () => {
   const post = {
+    Id: 12345,
     user: {
       name: 'Hiroshi Martinez',
       avatar: '/path/to/avatar.jpg',
@@ -62,7 +63,7 @@ const PostDetailPage: React.FC = () => {
       <Typography mb={2}>{post.content}</Typography>
       <Box component="img" src={post.image} alt="Post image" width="100%" borderRadius={2} mb={2} />
 
-      <PostActions upvotes={post.upvotes} downvotes={post.downvotes} comments={post.comments} />
+      <PostActions upvotes={post.upvotes} downvotes={post.downvotes} comments={post.comments} disabledActions={false} postId={post.Id} />
 
       <Typography fontWeight="bold" mb={2} mt={2}>Comments</Typography>
       {comments.map((comment, index) => (
