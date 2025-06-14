@@ -1,7 +1,6 @@
 ﻿using EarthSentry.Contracts.Contracts.Posts;
 using EarthSentry.Contracts.Interfaces.Business;
 using EarthSentry.Domain.Entities.Posts;
-using EarthSentry.Domain.Entities.Users;
 using EarthSentry.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 
