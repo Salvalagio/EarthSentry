@@ -1,7 +1,8 @@
 export interface PostActionsDto {
-  postId: number;
-  upvotes: number;
-  downvotes: number;
-  comments: number;
+  postId?: number;
+  upVotes?: number;
+  downVotes?: number;
+  comments?: number;
+  userVote?: number;
   disabledActions?: boolean; 
 }

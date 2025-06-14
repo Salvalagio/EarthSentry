@@ -18,12 +18,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { postCreatePosts } from '../services/PostService';
 import { uploadImageToCloudinary } from '../services/CloudinaryService';
 import { toast } from "react-toastify";
-export const StartPostDialog: React.FC<StartPostDialogProps> = ({open, onClose}) => {
+export const StartPostDialog: React.FC<StartPostDialogProps> = ({ open, onClose }) => {
     const { userId } = useAuth();
     const [description, setDescription] = useState('');
     const [photo, setPhoto] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
-    
+
     async function handleSubmit() {
         try {
             setLoading(true);
@@ -51,7 +51,7 @@ export const StartPostDialog: React.FC<StartPostDialogProps> = ({open, onClose})
         finally {
             setLoading(false);
         }
-       
+
     };
 
     const handleClose = () => {
@@ -61,59 +61,63 @@ export const StartPostDialog: React.FC<StartPostDialogProps> = ({open, onClose})
     }
 
     return (
-        loading ? 
-            <CircularProgress sx={{ alignSelf: "center" }} /> 
-        :
-            <Dialog open={open} fullWidth maxWidth="sm" >
-                <DialogTitle sx={{ textAlign: 'center' }}>
-                    <Typography fontWeight="bold">Start post</Typography>
-                    <IconButton onClick={handleClose} sx={{ position: 'absolute', left: 8, top: 8 }}>
-                        <CloseIcon />
-                    </IconButton>
-                </DialogTitle>
-
-                <DialogContent>
-                    <TextField
-                        variant="filled"
-                        fullWidth
-                        multiline
-                        placeholder="Add a description"
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        sx={{ mb: 2 }}
-                    />
-
-                    {
-                    photo 
-                    ? 
-                    <Box display="flex" alignItems="center" mb={2}>
-                        <IconButton component="label" onClick={() => setPhoto(null)}>
-                            <ImageIcon />
-                            <Typography ml={1} variant="body2">1 Photo added</Typography>
-                            <ClearIcon />
-                        </IconButton>
-                    </Box>
+        <Dialog open={open} fullWidth maxWidth="sm" >
+            <DialogTitle sx={{ textAlign: 'center' }}>
+                <Typography fontWeight="bold">Start post</Typography>
+                <IconButton onClick={handleClose} disabled={loading} sx={{ position: 'absolute', left: 8, top: 8 }}>
+                    <CloseIcon />
+                </IconButton>
+            </DialogTitle>
+            {
+                loading ?
+                    <>
+                        <DialogContent sx={{alignContent: "center", textAlign:"center"}}>
+                            <CircularProgress sx={{ alignSelf: "center" }} />
+                        </DialogContent>
+                    </>
                     :
-                    <Box display="flex" alignItems="center" mb={2}>
-                        <IconButton component="label">
-                            <ImageIcon />
-                            <input
-                                hidden
-                                accept="image/*"
-                                type="file"
-                                onChange={e => setPhoto(e.target.files?.[0] || null)}
-                            />
-                            <Typography ml={1} variant="body2">Add a photo</Typography>
-                            <Typography ml={1} variant="caption" color="text.secondary">(Max size 5MB)</Typography>
-                        </IconButton>
-                    </Box>
-                    }
+                    <>
+                        <DialogContent>
+                            <TextField
+                                variant="filled"
+                                fullWidth
+                                multiline
+                                placeholder="Add a description"
+                                value={description}
+                                onChange={e => setDescription(e.target.value)}
+                                sx={{ mb: 2 }} />
 
-                    <Button variant="contained" fullWidth onClick={handleSubmit}>
-                        Submit
-                    </Button>
-                </DialogContent>
-            </Dialog>
+                            {photo
+                                ?
+                                <Box display="flex" alignItems="center" mb={2}>
+                                    <IconButton component="label" onClick={() => setPhoto(null)}>
+                                        <ImageIcon />
+                                        <Typography ml={1} variant="body2">1 Photo added</Typography>
+                                        <ClearIcon />
+                                    </IconButton>
+                                </Box>
+                                :
+                                <Box display="flex" alignItems="center" mb={2}>
+                                    <IconButton component="label">
+                                        <ImageIcon />
+                                        <input
+                                            hidden
+                                            accept="image/*"
+                                            type="file"
+                                            onChange={e => setPhoto(e.target.files?.[0] || null)} />
+                                        <Typography ml={1} variant="body2">Add a photo</Typography>
+                                        <Typography ml={1} variant="caption" color="text.secondary">(Max size 5MB)</Typography>
+                                    </IconButton>
+                                </Box>}
+
+                            <Button variant="contained" fullWidth onClick={handleSubmit}>
+                                Submit
+                            </Button>
+                        </DialogContent>
+                    </>
+            }
+
+        </Dialog>
     );
 };
 

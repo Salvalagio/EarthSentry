@@ -9,6 +9,7 @@ import { PostDto } from "../interfaces/PostDto";
 import { useAuth } from "../contexts/AuthContext";
 import PullToRefresh from "react-pull-to-refresh";
 import { toast } from "react-toastify";
+import FloatingButtonAdmin from "../components/FloatingButtonAdmin";
 
 const FeedPage: React.FC<DarkLightModeSwitchProps> = ({ darkMode, onToggle }) => {
   const { userId } = useAuth();
@@ -26,43 +27,38 @@ const FeedPage: React.FC<DarkLightModeSwitchProps> = ({ darkMode, onToggle }) =>
       if (entries[0].isIntersecting && hasMore) {
         setPage((prev) => prev + 1);
       }
+      else if (!hasMore) {
+        toast.info("There is no more posts to load :(")
+      }
     });
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
 
-  const fetchData = useCallback(async (reset = false) => {
+  useEffect(() => {
     if (!userId) return;
-    setLoading(true);
-    try {
-      console.log("Refreshing feed..." + (reset ? " (reset)" : ""));
-      const data = await getPosts(reset ? 1 : page, userId);
-      if (reset) {
-        setPosts([]);
-        setPosts(data.posts);
-        setPage(2);
-      } 
-      else {
-        if (!data.hasMore) {
-          toast.info("No more posts to load.");
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await getPosts(page, userId);
+        if (page === 1) {
+          setPosts(data.posts);
+        } else {
+          setPosts((prev) => {
+            const ids = new Set(prev.map(p => p.postId));
+            return [...prev, ...data.posts.filter(p => !ids.has(p.postId))];
+          });
         }
-        else{
-          setPosts((prev) => [...prev, ...data.posts]);
-        }
-          
+        setHasMore(data.hasMore);
+      } catch (err) {
+        console.error("Failed to load posts:", err);
       }
-      setHasMore(data.hasMore);
-    } catch (err) {
-      console.error("Failed to load posts:", err);
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+    fetchData();
   }, [page, userId]);
 
-  useEffect(() => {
-    fetchData();
-  }, [page, fetchData]);
-
   const handleRefresh = async () => {
-    fetchData(true);
+    setPage(1);
   };
 
   return (
@@ -84,6 +80,7 @@ const FeedPage: React.FC<DarkLightModeSwitchProps> = ({ darkMode, onToggle }) =>
         </Box>
       </PullToRefresh>
 
+      <FloatingButtonAdmin />
       <FloatingButton />
     </Box>
   );

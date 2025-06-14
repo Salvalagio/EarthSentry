@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Avatar,
@@ -6,77 +6,113 @@ import {
   IconButton,
   TextField,
   InputAdornment,
-  Paper
+  Paper,
 } from '@mui/material';
-import { InsertEmoticon, CameraAlt } from '@mui/icons-material';
+import { InsertEmoticon, Send } from '@mui/icons-material';
 import { ArrowLeft } from 'lucide-react';
 import PostActions from '../components/PostActions';
+import { usePostContext } from '../contexts/PostContext';
+import { useNavigate } from 'react-router-dom';
+import { PostDto } from '../interfaces/PostDto';
+import { getPostDetails, getPostComments, postAddPostComment } from '../services/PostService';
+import { useAuth } from '../contexts/AuthContext';
+import { PostCommentDto } from '../interfaces/PostCommentDto';
+import { getDistanceFromNow } from '../utils/FunctionHelpers';
+import { CreateCommentDto } from '../interfaces/CreateCommentDto';
+import PostComment from '../components/PostComment';
 
 const PostDetailPage: React.FC = () => {
-  const post = {
-    Id: 12345,
-    user: {
-      name: 'Hiroshi Martinez',
-      avatar: '/path/to/avatar.jpg',
-    },
-    date: '1d',
-    content: 'New idea: what if we create a social network that allows users to share and vote on environmental issues. That way, we can get the public opinion and influence decision making.',
-    image: '/mnt/data/ed3dfd12-a04b-4f4e-91d7-dfbcaf4a1341.png',
-    upvotes: 20,
-    downvotes: 3,
-    comments: 6,
-  };
+  const navigate = useNavigate();
+  const { userId, userImage } = useAuth();
+  const { postId, setPost } = usePostContext();
+  const [post, setPostState] = useState<PostDto>();
+  const [comments, setPostComments] = useState<PostCommentDto[]>([]);
+  const [commentContent, setCommentContent] = useState<string>();
 
-  const comments = [
-    {
-      user: 'Matt Henderson',
-      avatar: '/path/to/avatar1.jpg',
-      text: 'Great idea! We should also consider adding a feature where people can take actions on these issues',
-      date: '1d'
-    },
-    {
-      user: 'Sophia',
-      avatar: '/path/to/avatar2.jpg',
-      text: "Definitely, I'm in for this!",
-      date: '1d'
+  useEffect(() => {
+    if (!postId || !userId) {
+      return;
     }
-  ];
 
+    getPostDetails(postId, userId)
+      .then((data) => {
+        setPostState(data);
+        setPost(data);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch post details:", error);
+      });
+
+    getPostComments(postId, userId)
+      .then((data) => {
+        setPostComments(data);
+      }).catch((error) => {
+        console.error("Failed to fetch comments details:", error);
+      });
+  }, [postId, userId, setPost]);
+
+
+  const SendComment = async (content: string) => {
+    if (!content.trim() || !userId || !postId) return;
+
+    const newComment: CreateCommentDto = {
+      userId: userId,
+      postId: postId,
+      commentDescription: content
+    };
+
+    if (await postAddPostComment(newComment)) {
+      getPostComments(postId, userId)
+        .then((data) => {
+          setPostComments(data);
+          if(post){
+            post.comments ++;
+            setPostState(post);
+          }
+          setCommentContent("");
+        }).catch((error) => {
+          console.error("Failed to fetch comments details:", error);
+        });
+    }
+  };
 
   return (
     <Box sx={{ px: 2, py: 3, maxWidth: 600, mx: 'auto' }}>
       <Box display="flex" alignItems="center" mb={2}>
-        <IconButton href="/feed">
-            <ArrowLeft size={20} />
+        <IconButton onClick={() => navigate(-1)} >
+          <ArrowLeft size={20} />
         </IconButton>
         <Typography variant="h6" fontWeight="bold" ml={1}>Feed</Typography>
       </Box>
 
       <Box display="flex" alignItems="center" gap={2} mb={1} mt={1}>
-        <Avatar src={post.user.avatar} />
+        <Avatar src={post?.userImageUrl} />
         <Box>
-          <Typography fontWeight={600}>{post.user.name}</Typography>
-          <Typography variant="body2" color="text.secondary">{post.date}</Typography>
+          <Typography fontWeight={600}>{post?.username}</Typography>
+          <Typography variant="body2" color="text.secondary">{getDistanceFromNow(post?.createdAt)}</Typography>
         </Box>
       </Box>
 
-      <Typography mb={2}>{post.content}</Typography>
-      <Box component="img" src={post.image} alt="Post image" width="100%" borderRadius={2} mb={2} />
+      <Typography mb={2}>{post?.description}</Typography>
+      <Box component="img" src={post?.imageUrl} alt="Post image" width="100%" borderRadius={2} mb={2} />
 
-      <PostActions upvotes={post.upvotes} downvotes={post.downvotes} comments={post.comments} disabledActions={false} postId={post.Id} />
+      {post && <PostActions {...post} />}
 
       <Typography fontWeight="bold" mb={2} mt={2}>Comments</Typography>
       {comments.map((comment, index) => (
-        <Box key={index} display="flex" gap={2} mb={2}>
-          <Avatar src={comment.avatar} />
-          <Box>
-            <Typography fontWeight={600}>{comment.user} <Typography variant="body2" component="span" color="text.secondary">{comment.date}</Typography></Typography>
-            <Typography>{comment.text}</Typography>
-          </Box>
-        </Box>
+        <PostComment
+          key={comment.commentId ?? index}
+          {...comment}
+          onDelete={(id) => {
+            setPostComments(prev => prev.filter(c => c.commentId !== id));
+            if (post) {
+              const updatedPost = { ...post, comments: post.comments - 1 };
+              setPostState(updatedPost);
+            }
+          }}
+        />
       ))}
 
-      {/* Comment Input */}
       <Paper
         elevation={1}
         sx={{
@@ -88,17 +124,27 @@ const PostDetailPage: React.FC = () => {
           py: 1,
         }}
       >
-        <Avatar src="/path/to/currentUser.jpg" sx={{ width: 32, height: 32, mr: 1 }} />
+        <Avatar src={userImage ?? undefined} sx={{ width: 32, height: 32, mr: 1 }} />
         <TextField
           fullWidth
           placeholder="Write a comment..."
           variant="standard"
+          value={commentContent}
+          onChange={(e) => setCommentContent(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && commentContent) {
+              e.preventDefault();
+              SendComment(commentContent);
+            }
+          }}
           InputProps={{
             disableUnderline: true,
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton><CameraAlt /></IconButton>
                 <IconButton><InsertEmoticon /></IconButton>
+                <IconButton onClick={() => SendComment(commentContent ?? "")}>
+                  <Send />
+                </IconButton>
               </InputAdornment>
             ),
             sx: { fontSize: 16 }

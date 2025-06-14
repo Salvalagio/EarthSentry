@@ -3,9 +3,11 @@ export interface PostDto {
   description: string;
   imageUrl: string;
   userImageUrl: string;
+  createdAt: Date;
   username: string;
-  upvotes: number;
-  downvotes: number;
+  upVotes: number;
+  downVotes: number;
+  userVote?: number;
   comments: number;
   disabledActions?: boolean; // Optional property to disable actions
 }

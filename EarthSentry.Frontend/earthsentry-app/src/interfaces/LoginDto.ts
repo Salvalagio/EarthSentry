@@ -1,7 +1,8 @@
 export interface LoginDto {
     userId: number | null;
-    userImage: string | null;
-    username: string;
+    imageUrl: string | null;
+    username: string | null;
     password: string;
+    email: string | null;
     message: string | null;
 }
