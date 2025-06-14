@@ -20,6 +20,13 @@ CREATE TABLE earth.tb_postvotes (
     CONSTRAINT uq_post_user UNIQUE (postid, userid) -- user can only vote once per post
 );
 
+CREATE TABLE earth.tb_comments (
+    commentid SERIAL PRIMARY KEY,
+    postid INTEGER NOT NULL REFERENCES earth.tb_posts(postid) ON DELETE CASCADE,
+    userid INTEGER NOT NULL REFERENCES earth.tb_users(userid) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE OR REPLACE FUNCTION earth.fn_update_post_updatedat()
 RETURNS TRIGGER AS $$

@@ -1,4 +1,5 @@
 ﻿using EarthSentry.Domain.Entities.Users;
+using System.Xml.Linq;
 
 namespace EarthSentry.Domain.Entities.Posts
 {
@@ -17,6 +18,7 @@ namespace EarthSentry.Domain.Entities.Posts
 
         public User User { get; set; } = new();
         public ICollection<PostVote> Votes { get; set; } = [];
+        public ICollection<PostComment> Comments { get; set; } = [];
     }
 
 }

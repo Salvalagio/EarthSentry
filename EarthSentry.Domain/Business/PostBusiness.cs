@@ -1,15 +1,17 @@
 ﻿using EarthSentry.Contracts.Contracts.Posts;
 using EarthSentry.Contracts.Interfaces.Business;
 using EarthSentry.Domain.Entities.Posts;
+using EarthSentry.Domain.Entities.Users;
 using EarthSentry.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 
 namespace EarthSentry.Domain.Business
 {
     public class PostBusiness(ILogger<PostBusiness> _logger,
-                              IPostRepository _postRepo,
-                              IPostVoteRepository _voteRepo,
-                              IUserRepository _userRepository) : IPostBusiness
+                              IPostRepository _postRepository,
+                              IPostVoteRepository _voteRepository,
+                              IUserRepository _userRepository,
+                              IPostCommentRepository _postCommentRepository) : IPostBusiness
     {
         public async Task<bool> AddPostAsync(PostCreateDto dto, int userId)
         {
@@ -25,7 +27,7 @@ namespace EarthSentry.Domain.Business
                 var post = new Post
                 {
                     UserId = userId,
-                    User = user, // Assuming _userRepository is injected and available
+                    User = user,
                     Description = dto.Description,
                     ImageUrl = dto.ImageUrl,
                     Latitude = dto.Latitude,
@@ -34,8 +36,8 @@ namespace EarthSentry.Domain.Business
                     UpdatedAt = DateTime.UtcNow
                 };
 
-                await _postRepo.AddAsync(post);
-                await _postRepo.SaveAsync();
+                await _postRepository.AddAsync(post);
+                await _postRepository.SaveAsync();
                 return true;
             }
             catch (Exception ex)
@@ -47,47 +49,55 @@ namespace EarthSentry.Domain.Business
 
         public async Task<bool> EditPostAsync(int postId, PostUpdateDto dto)
         {
-            var post = await _postRepo.GetByIdAsync(postId);
+            var post = await _postRepository.GetByIdAsync(postId);
             if (post == null) return false;
 
             post.Description = dto.Description ?? post.Description;
             post.ImageUrl = dto.ImageUrl ?? post.ImageUrl;
 
-            _postRepo.Update(post);
-            await _postRepo.SaveAsync();
+            _postRepository.Update(post);
+            await _postRepository.SaveAsync();
             return true;
         }
 
         public async Task<bool> DeletePostAsync(int postId)
         {
-            var post = await _postRepo.GetByIdAsync(postId);
+            var post = await _postRepository.GetByIdAsync(postId);
             if (post == null) return false;
 
-            _postRepo.Delete(post);
-            await _postRepo.SaveAsync();
+            _postRepository.Delete(post);
+            await _postRepository.SaveAsync();
             return true;
         }
 
-        public async Task<IEnumerable<PostWithVotesDto>> GetAllPostsAsync(int pageNumber, int pageSize = 10)
+        public async Task<PostWithVotesDto> GetPostsByIdAndUserAsync(int postId, long userId)
         {
-            var posts = await _postRepo.GetAllWithVotesAsync(pageNumber, pageSize);
+            var posts = await _postRepository.GetByPostId(postId);
 
-            return posts.Select(p => new PostWithVotesDto
+            if (posts == null)
+                return new();
+
+            return new PostWithVotesDto
             {
-                PostId = p.PostId,
-                UserId = p.UserId,
-                Description = p.Description,
-                ImageUrl = p.ImageUrl,
-                Latitude = p.Latitude,
-                Longitude = p.Longitude,
-                CreatedAt = p.CreatedAt,
-                VoteCount = p.Votes.Sum(v => v.Vote)
-            });
+                PostId = posts.PostId,
+                Description = posts.Description,
+                ImageUrl = posts.ImageUrl,
+                Latitude = posts.Latitude,
+                Longitude = posts.Longitude,
+                CreatedAt = posts.CreatedAt,
+                UpVotes = posts.Votes.Where(x => x.Vote > 0).Sum(v => v.Vote),
+                DownVotes = posts.Votes.Where(x => x.Vote < 0).Sum(v => v.Vote),
+                UserId = posts.UserId,
+                UserVote = posts.Votes.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
+                Comments = posts.Comments.Count,
+                Username = posts.User.Username,
+                UserImageUrl = posts.User.ImageUrl
+            };
         }
 
-        public async Task<IEnumerable<PostWithVotesDto>> GetAllPostsWithUserVoteAsync(int userId, int pageNumber, int pageSize = 10)
+        public async Task<IEnumerable<PostWithVotesDto>> GetAllPostsWithUserVoteAsync(int userId, int pageNumber, int pageSize = 3)
         {
-            var posts = await _postRepo.GetAllWithVotesAsync(pageNumber, pageSize);
+            var posts = await _postRepository.GetAllWithVotesAsync(pageNumber, pageSize);
 
             return posts.Select(p => new PostWithVotesDto
             {
@@ -101,14 +111,67 @@ namespace EarthSentry.Domain.Business
                 UpVotes = p.Votes.Where(x => x.Vote > 0).Sum(v => v.Vote),
                 DownVotes = p.Votes.Where(x => x.Vote < 0).Sum(v => v.Vote),
                 UserVote = p.Votes.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
+                Comments = p.Comments.Count,
                 Username = p.User.Username,
                 UserImageUrl = p.User.ImageUrl
             });
         }
 
+        public async Task<IEnumerable<PostCommentDto>> GetCommentsByPostIdAsync(int postId, int userId)
+        {
+            var existingPost = await _postCommentRepository.GetByPostIdAsync(postId);
+            if (existingPost == null)
+                return [];
+
+            var commentListDto = existingPost.Select(comment => new PostCommentDto
+            {
+                CommentId = comment.User.UserId == userId ? comment.CommentId : 0,
+                UserImageUrl = comment.User.ImageUrl,
+                Username = comment.User.Username,
+                CreateAt = comment.CreatedAt,
+                IsFromOwner = comment.User.UserId == userId,
+                Content = comment.Content,
+            });
+            
+            return commentListDto;
+        }
+
+        public async Task<bool> AddCommentAsync(int postId, int userId, string comment)
+        {
+            var existingPost = await _postRepository.GetByIdAsync(postId);
+            if (existingPost == null)
+                return false;
+
+            var postComment = new PostComment
+            {
+                PostId = postId,
+                UserId = userId,
+                Post = existingPost,
+                User = await _userRepository.GetByIdAsync(userId),
+                Content = comment,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _postCommentRepository.AddAsync(postComment);
+            await _postCommentRepository.SaveAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveCommentAsync(int commentId, int userId)
+        {
+            var existingComment = await _postCommentRepository.GetByIdAndUserIdAsync(commentId, userId);
+            if (existingComment == null)
+                return false;
+
+
+            _postCommentRepository.Delete(existingComment);
+            await _postCommentRepository.SaveAsync();
+            return true;
+        }
+
         public async Task<bool> AddVoteAsync(int postId, int userId, short vote)
         {
-            var existingVote = await _voteRepo.GetByUserAndPostAsync(postId, userId);
+            var existingVote = await _voteRepository.GetByUserAndPostAsync(postId, userId);
             if (existingVote != null)
                 return false;
 
@@ -117,22 +180,40 @@ namespace EarthSentry.Domain.Business
                 PostId = postId,
                 UserId = userId,
                 Vote = vote,
+                Post = await _postRepository.GetByIdAsync(postId),
+                User = await _userRepository.GetByIdAsync(userId),
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _voteRepo.AddAsync(postVote);
-            await _voteRepo.SaveAsync();
+            await _voteRepository.AddAsync(postVote);
+            await _voteRepository.SaveAsync();
             return true;
         }
 
         public async Task<bool> RemoveVoteAsync(int postId, int userId)
         {
-            var vote = await _voteRepo.GetByUserAndPostAsync(postId, userId);
+            var vote = await _voteRepository.GetByUserAndPostAsync(postId, userId);
             if (vote == null) return false;
 
-            _voteRepo.Delete(vote);
-            await _voteRepo.SaveAsync();
+            _voteRepository.Delete(vote);
+            await _voteRepository.SaveAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<AdminPostSummaryDto>> GetTopIssues(DateTime startDate, DateTime endDate)
+        {
+            var posts = await _postRepository.GetAllPostsByDateAsync(startDate, endDate);
+
+            var adminSummary =  posts.Select(p => new AdminPostSummaryDto
+            {
+                PostId = p.PostId,
+                ImageUrl = p.ImageUrl,
+                Title = p.Description.Length > 50 ? p.Description[..47] + "..." : p.Description,
+                Category = "NoCategory",
+                VoteCount = p.Votes.Count(),
+            });
+
+            return adminSummary.OrderByDescending(p => p.VoteCount).Take(10);
         }
     }
 

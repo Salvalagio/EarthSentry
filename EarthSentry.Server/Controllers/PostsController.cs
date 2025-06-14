@@ -8,10 +8,11 @@ namespace EarthSentry.Server.Controllers
     [Route("[controller]")]
     public class PostsController(IPostBusiness _postBusiness) : ControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostWithVotesDto>>> GetAllPosts([FromQuery] int page)
+        #region Posts
+        [HttpGet("details/{postId}")]
+        public async Task<ActionResult<PostWithVotesDto>> GetAllPosts([FromRoute] int postId, [FromHeader] long userId)
         {
-            var posts = await _postBusiness.GetAllPostsAsync(page);
+            var posts = await _postBusiness.GetPostsByIdAndUserAsync(postId, userId);
             return Ok(posts);
         }
 
@@ -51,6 +52,9 @@ namespace EarthSentry.Server.Controllers
 
             return Ok(new { message = "Post deleted successfully." });
         }
+        #endregion
+
+        #region Votes
 
         [HttpPost("vote")]
         public async Task<IActionResult> AddVote([FromBody] PostVoteDto dto)
@@ -63,7 +67,7 @@ namespace EarthSentry.Server.Controllers
         }
 
         [HttpDelete("vote")]
-        public async Task<IActionResult> RemoveVote([FromQuery] int postId, [FromQuery] int userId)
+        public async Task<IActionResult> RemoveVote([FromQuery] int postId, [FromHeader] int userId)
         {
             var result = await _postBusiness.RemoveVoteAsync(postId, userId);
             if (!result)
@@ -71,5 +75,44 @@ namespace EarthSentry.Server.Controllers
 
             return Ok(new { message = "Vote removed successfully." });
         }
+        #endregion
+
+        #region Comments
+        [HttpGet("comments/{postId}")]
+        public async Task<ActionResult<PostCommentDto>> GetAllCommentsFromPost([FromRoute] int postId, [FromHeader] int userId)
+        {
+            var comments = await _postBusiness.GetCommentsByPostIdAsync(postId, userId);
+            return Ok(comments);
+        }
+
+        [HttpPost("comments")]
+        public async Task<IActionResult> AddComment([FromBody] CommentRequestoDto dto)
+        {
+            var result = await _postBusiness.AddCommentAsync(dto.PostId, dto.UserId, dto.CommentDescription);
+            if (!result)
+                return BadRequest(new { message = "Comment could not be registered." });
+
+            return Ok(new { message = "Comment registered successfully." });
+        }
+
+        [HttpDelete("comments")]
+        public async Task<IActionResult> RemoveComment([FromQuery] int commentId, [FromHeader] int userId)
+        {
+            var result = await _postBusiness.RemoveCommentAsync(commentId, userId);
+            if (!result)
+                return NotFound(new { message = "Comment not found or could not be removed." });
+
+            return Ok(new { message = "Comment removed successfully." });
+        }
+        #endregion
+
+        #region Post Admin
+        [HttpGet("admin/issues")]
+        public async Task<ActionResult<AdminPostSummaryDto>> GetTopIssues([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            var topPosts = await _postBusiness.GetTopIssues(startDate, endDate);
+            return Ok(topPosts);
+        }
+        #endregion
     }
 }

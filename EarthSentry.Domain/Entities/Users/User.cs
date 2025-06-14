@@ -17,5 +17,7 @@ namespace EarthSentry.Domain.Entities.Users
 
         public ICollection<Post> Posts { get; set; } = [];
         public ICollection<PostVote> PostVotes { get; set; } = [];
+        public ICollection<PostComment> Comments { get; set; } = [];
+
     }
 }

@@ -16,7 +16,7 @@ namespace EarthSentry.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUserById(string id, string password)
+        public async Task<ActionResult<UserDto>> GetUserById(string id, [FromHeader] string password)
         {
             var user = await _userBusiness.GetUserByIdAsync(id, password);
             if (user == null)
@@ -42,17 +42,17 @@ namespace EarthSentry.Server.Controllers
             if (!Success)
                 return Unauthorized();
 
-            return Ok(new { userId = UserId, userImage = UserImage });
+            return Ok(new { userId = UserId, imageUrl = UserImage });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDto registerDto)
         {
-            var (Success, Message) = await _userBusiness.RegisterUserAsync(registerDto);
+            var (Success, Message, UserId) = await _userBusiness.RegisterUserAsync(registerDto);
             if (!Success)
                 return BadRequest(new { message = Message });
 
-            return Ok(new { message = Message });
+            return Ok(new { userId = UserId });
         }
 
         [HttpPut("update")]

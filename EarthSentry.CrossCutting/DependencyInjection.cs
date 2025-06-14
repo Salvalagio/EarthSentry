@@ -28,6 +28,7 @@ namespace EarthSentry.CrossCutting
                 options.UseNpgsql(configuration.GetConnectionString("EarthDB")));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPostCommentRepository, PostCommentRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IPostRepository, PostRepository>();

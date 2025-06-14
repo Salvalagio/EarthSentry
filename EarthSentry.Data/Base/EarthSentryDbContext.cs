@@ -3,7 +3,6 @@ using EarthSentry.Domain.Entities.Roles;
 using EarthSentry.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System.ComponentModel;
 
 namespace EarthSentry.Data.Base
 {
@@ -14,6 +13,7 @@ namespace EarthSentry.Data.Base
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Post> Post { get; set; }
         public DbSet<PostVote> PostVote { get; set; }
+        public DbSet<PostComment> PostComment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,16 @@ namespace EarthSentry.Data.Base
                       .HasDefaultValue(true);
                 entity.Property(u => u.ImageUrl)
                       .HasColumnName("imageurl");
+
+                entity.HasMany(u => u.Posts)
+                      .WithOne(p => p.User)
+                      .HasForeignKey(p => p.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(u => u.Comments)
+                      .WithOne(c => c.User)
+                      .HasForeignKey(c => c.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Role>(entity => {
@@ -132,6 +142,11 @@ namespace EarthSentry.Data.Base
                       .WithMany(u => u.Posts)
                       .HasForeignKey(p => p.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(p => p.Comments)
+                      .WithOne(c => c.Post)
+                      .HasForeignKey(c => c.PostId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<PostVote>(entity =>
@@ -172,6 +187,43 @@ namespace EarthSentry.Data.Base
 
                 entity.HasIndex(v => new { v.PostId, v.UserId })
                       .IsUnique();
+            });
+
+            modelBuilder.Entity<PostComment>(entity =>
+            {
+                entity.ToTable("tb_comments", "earth");
+
+                entity.HasKey(c => c.CommentId);
+
+                entity.Property(c => c.CommentId)
+                      .HasColumnName("commentid");
+
+                entity.Property(c => c.PostId)
+                      .HasColumnName("postid")
+                      .IsRequired();
+
+                entity.Property(c => c.UserId)
+                      .HasColumnName("userid")
+                      .IsRequired();
+
+                entity.Property(c => c.Content)
+                      .HasColumnName("content")
+                      .IsRequired();
+
+                entity.Property(c => c.CreatedAt)
+                      .HasColumnName("createdat")
+                      .HasConversion(MainDateTimeConverter)
+                      .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.HasOne(c => c.Post)
+                      .WithMany(p => p.Comments)
+                      .HasForeignKey(c => c.PostId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(c => c.User)
+                      .WithMany(u => u.Comments)
+                      .HasForeignKey(c => c.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
 

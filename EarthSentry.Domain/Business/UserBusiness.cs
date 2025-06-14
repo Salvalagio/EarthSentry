@@ -68,10 +68,10 @@ namespace EarthSentry.Domain.Business
             return (true, user.UserId, user.ImageUrl);
         }
 
-        public async Task<(bool Success, string Message)> RegisterUserAsync(UserRegisterDto userRegisterDto)
+        public async Task<(bool Success, string Message, int? UserId)> RegisterUserAsync(UserRegisterDto userRegisterDto)
         {
             if (await _userRepo.GetByUsernameAsync(userRegisterDto.Username) != null)
-                return (false, "Username already in use, try another.");
+                return (false, "Username already in use, try another.", null);
 
             try
             {
@@ -96,12 +96,12 @@ namespace EarthSentry.Domain.Business
                     await _userRepo.SaveAsync();
                 }
 
-                return (true, "User has been created.");
+                return (true, "User has been created.", user.UserId);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error registering user: {Message}", ex.Message);
-                return (false, "Unknown error ocurred, please call the system admin.");
+                return (false, "Unknown error ocurred, please call the system admin.", null);
             }
             
         }
@@ -111,8 +111,12 @@ namespace EarthSentry.Domain.Business
             var user = await _userRepo.GetByIdAsync(dto.UserId);
             if (user == null) return false;
 
-            user.Email = dto.Email ?? user.Email;
-            user.Email = dto.ImageUrl ?? user.ImageUrl;
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+                user.Email = dto.Email ?? user.Email;
+
+            if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
+                user.ImageUrl = dto.ImageUrl ?? user.ImageUrl;
+
             if (!string.IsNullOrWhiteSpace(dto.NewPassword))
                 user.PasswordHash = HashPassword(dto.NewPassword);
 
