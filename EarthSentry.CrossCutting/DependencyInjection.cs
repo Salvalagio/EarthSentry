@@ -1,5 +1,4 @@
 ﻿using EarthSentry.Contracts.Interfaces.Business;
-using EarthSentry.Contracts.Interfaces.Services;
 using EarthSentry.Data.Base;
 using EarthSentry.Data.Repositories;
 using EarthSentry.Domain.Business;
