@@ -44,6 +44,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Infrastructure", "5.Infra
 		Documentation\Infrastructure\1-DatabaseRunCommand.md = Documentation\Infrastructure\1-DatabaseRunCommand.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Tests", "6.Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthSentry.Test", "EarthSentry.Test\EarthSentry.Test.csproj", "{3A35B0C7-1D9C-4DCC-A56E-EBE4C7551C2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +74,10 @@ Global
 		{57059EC6-E90B-4CBB-9EAB-A4783C13E8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57059EC6-E90B-4CBB-9EAB-A4783C13E8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57059EC6-E90B-4CBB-9EAB-A4783C13E8F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A35B0C7-1D9C-4DCC-A56E-EBE4C7551C2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A35B0C7-1D9C-4DCC-A56E-EBE4C7551C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A35B0C7-1D9C-4DCC-A56E-EBE4C7551C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A35B0C7-1D9C-4DCC-A56E-EBE4C7551C2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +89,7 @@ Global
 		{DF6968DA-3534-463D-ADC2-D1A676D1FD35} = {2C3F0802-E0A5-44F6-AD6C-83885B2D821A}
 		{57059EC6-E90B-4CBB-9EAB-A4783C13E8F6} = {24FF8498-DACA-4774-94B6-15EA16D0DC3F}
 		{66EF0330-4E44-4B81-B6B5-B46828C47988} = {5125E92C-518C-4FFD-8F38-7BE13A1770E9}
+		{3A35B0C7-1D9C-4DCC-A56E-EBE4C7551C2F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {173786E8-8BB5-4D10-BE8B-A5878C6B7417}
