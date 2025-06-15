@@ -1,4 +1,4 @@
-# EarthSentry
+﻿# EarthSentry
 
 EarthSentry is a .NET 8 application designed to manage users, posts, comments, and roles with a clean architecture and dependency injection. It leverages Entity Framework Core with PostgreSQL for data persistence.
 
@@ -45,8 +45,8 @@ EarthSentry is a .NET 8 application designed to manage users, posts, comments, a
     dotnet ef database update --project EarthSentry.Server
     ```
     If you had any issues with migration, you can manually create the database using the following steps:
-        - Go to `/Documentation/Database` folder
-        - There you will find the SQL scripts to create the database and tables, just execute by the order of files.
+      - Go to `/Documentation/Database` folder
+      - There you will find the SQL scripts to create the database and tables, just execute by the order of files.
 
  
 4. If you want to run on local with DockerDesktop you can follow the scripts under `/Documentation/Infrastructure`
@@ -54,5 +54,5 @@ EarthSentry is a .NET 8 application designed to manage users, posts, comments, a
  
 5. For the frontend, navigate to the `EarthSentry.Frontend/earthsentry-app` directory and follow the instructions in the README there.
 
- 
-### Running the Application
+
+Enjoy using EarthSentry! 🌍
