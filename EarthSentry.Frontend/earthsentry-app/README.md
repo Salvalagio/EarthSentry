@@ -1,46 +1,94 @@
-# Getting Started with Create React App
+# EarthSentry Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the EarthSentry Frontend!  
+This is a React + TypeScript web application that lets users share, discuss, and vote on environmental posts.  
+It features dark/light mode, infinite scrolling, authentication, and more.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- User authentication
+- Feed with infinite scroll
+- Post details and comments
+- Upvote/downvote system
+- Admin reporting
+- Dark/Light mode toggle
+- Responsive design
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🛠️ Getting Started
 
-### `npm test`
+### Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Node.js](https://nodejs.org/) (v16 or higher recommended)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/earthsentry-frontend.git
+   cd earthsentry-frontend/earthsentry-app
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **Start the development server:**
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
 
-### `npm run eject`
+4. **Open your browser:**  
+   Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## ⚙️ Configuration
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- The frontend expects the backend API to be running at `http://localhost:5253`.
+- You can change the API URL in `src/services/PostService.ts` if needed.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
 
-## Learn More
+## 🧑‍💻 Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+earthsentry-app/
+├── src/
+│   ├── components/      # Reusable UI components
+│   ├── contexts/        # React context providers
+│   ├── interfaces/      # TypeScript interfaces and types
+│   ├── pages/           # Page components (Feed, Login, PostDetail, etc.)
+│   ├── services/        # API service functions
+│   ├── types/           # Shared type definitions
+│   └── App.tsx          # Main app component
+├── public/
+├── package.json
+└── README.md
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+## 📝 Scripts
+
+- `npm start` – Start the development server
+- `npm run build` – Build for production
+- `npm test` – Run tests (if available)
+- `npm run lint` – Lint the code
+
+## 📫 Contact
+
+For questions or support, open an issue or contact the maintainer.
+
+---
+
+Enjoy using EarthSentry! 🌍
