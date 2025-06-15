@@ -44,9 +44,9 @@ EarthSentry is a .NET 8 application designed to manage users, posts, comments, a
     ```sh
     dotnet ef database update --project EarthSentry.Server
     ```
-    If you had any issues with migration, you can manually create the database using the following SQL:
-        1. Go to `/Documentation/Database` folder
-        2. There you will find the SQL scripts to create the database and tables, just execute by the order of files.
+    If you had any issues with migration, you can manually create the database using the following steps:
+        - Go to `/Documentation/Database` folder
+        - There you will find the SQL scripts to create the database and tables, just execute by the order of files.
 
  
 4. If you want to run on local with DockerDesktop you can follow the scripts under `/Documentation/Infrastructure`
